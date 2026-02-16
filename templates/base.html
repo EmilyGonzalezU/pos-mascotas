@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es-cl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pet Store POS{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        petPrimary: '#2facb2', // Teal blue (calm/care)
+                        petSecondary: '#f4a261', // Warm orange (friendly)
+                        petDark: '#264653', // Deep blue (professional)
+                        petLight: '#e9c46a', // Soft yellow (energy)
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+    <header class="bg-petDark text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                🐾 <span class="hidden sm:inline">Pet Store POS</span>
+            </h1>
+            <nav>
+                <ul class="flex gap-4">
+                    <li><a href="/" class="hover:text-petSecondary transition">Inicio</a></li>
+                    <li><a href="/sales/" class="hover:text-petSecondary transition">Caja</a></li>
+                    <li><a href="/inventory/" class="hover:text-petSecondary transition">Inventario</a></li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="hover:text-red-300 transition text-red-200">Salir</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}" class="hover:text-white transition text-green-200">Entrar</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 w-full max-w-7xl">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-200 text-gray-600 text-center p-4 mt-8">
+        <p>&copy; {% now "Y" %} Pet Store POS - Chile</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+</body>
+
+</html>

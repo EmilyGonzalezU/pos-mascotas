@@ -1,0 +1,33 @@
+{% if products %}
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for product in products %}
+    <button hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-container"
+        class="bg-white p-4 rounded-lg shadow hover:shadow-md transition text-left border border-gray-100 hover:border-petPrimary group flex flex-col h-full">
+
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                {{ product.sku }}
+            </span>
+            <span class="text-sm font-bold text-petPrimary">
+                ${{ product.price|floatformat:0 }}
+            </span>
+        </div>
+
+        <h3 class="font-bold text-gray-800 group-hover:text-petDark mb-1 leading-tight line-clamp-2">
+            {{ product.name }}
+        </h3>
+
+        <div class="mt-auto pt-2 flex justify-between items-end text-sm text-gray-500">
+            <span>Stock: {{ product.stock }}</span>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full group-hover:bg-green-200">
+                + Agregar
+            </span>
+        </div>
+    </button>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-gray-500 mt-10">
+    <p>No se encontraron productos.</p>
+</div>
+{% endif %}

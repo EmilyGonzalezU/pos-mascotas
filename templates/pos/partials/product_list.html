@@ -1,0 +1,48 @@
+{% if products %}
+<div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    {% for product in products %}
+    <button hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-items-container"
+        class="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform active:scale-95 text-left border border-gray-100 hover:border-petPrimary group flex flex-col h-full relative overflow-hidden">
+
+        <!-- Badge Granel -->
+        {% if product.is_bulk %}
+        <div
+            class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-bl-lg z-10">
+            GRANEL
+        </div>
+        {% endif %}
+
+        <div class="mb-2">
+            <span class="block text-xs font-bold text-gray-400 uppercase">{{ product.brand }}</span>
+            <h3 class="font-bold text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-petPrimary">
+                {{ product.name }}
+            </h3>
+            <span class="text-xs text-gray-500">SKU: {{ product.sku }}</span>
+        </div>
+
+        <div class="mt-auto pt-3 border-t border-gray-100 flex justify-between items-end">
+            <div>
+                <span class="block text-xs text-gray-400">Precio</span>
+                <span class="text-xl font-black text-petDark">${{ product.price_clp|floatformat:0 }}</span>
+            </div>
+            <div class="bg-petPrimary text-white p-2 rounded-full shadow-lg group-hover:bg-petDark transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+    </button>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-gray-500 mt-20">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-30" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <p class="text-xl">No se encontraron productos.</p>
+</div>
+{% endif %}
