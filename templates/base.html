@@ -12,10 +12,14 @@
             theme: {
                 extend: {
                     colors: {
-                        petPrimary: '#2facb2', // Teal blue (calm/care)
-                        petSecondary: '#f4a261', // Warm orange (friendly)
-                        petDark: '#264653', // Deep blue (professional)
-                        petLight: '#e9c46a', // Soft yellow (energy)
+                        // Blue Corporate Palette
+                        primary: '#1e40af',      // blue-800
+                        primaryDark: '#1e3a8a',  // blue-900
+                        primaryLight: '#3b82f6', // blue-600
+                        accent: '#60a5fa',       // blue-400
+                        bgLight: '#f8fafc',      // slate-50
+                        textDark: '#1e293b',     // slate-800
+                        borderLight: '#bfdbfe',  // blue-200
                     }
                 }
             }
@@ -28,17 +32,17 @@
     {% block extra_head %}{% endblock %}
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
-    <header class="bg-petDark text-white p-4 shadow-md">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+    <header class="bg-blue-900 text-white p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 🐾 <span class="hidden sm:inline">Pet Store POS</span>
             </h1>
             <nav>
                 <ul class="flex gap-4">
-                    <li><a href="/" class="hover:text-petSecondary transition">Inicio</a></li>
-                    <li><a href="/sales/" class="hover:text-petSecondary transition">Caja</a></li>
-                    <li><a href="/inventory/" class="hover:text-petSecondary transition">Inventario</a></li>
+                    <li><a href="/" class="hover:text-blue-300 transition">Inicio</a></li>
+                    <li><a href="/sales/" class="hover:text-blue-300 transition">Caja</a></li>
+                    <li><a href="/inventory/" class="hover:text-blue-300 transition">Inventario</a></li>
                     {% if user.is_authenticated %}
                     <li>
                         <form action="{% url 'logout' %}" method="post" class="inline">
@@ -58,7 +62,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-200 text-gray-600 text-center p-4 mt-8">
+    <footer class="bg-slate-200 text-slate-600 text-center p-4 mt-8">
         <p>&copy; {% now "Y" %} Pet Store POS - Chile</p>
     </footer>
 

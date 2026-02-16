@@ -4,23 +4,23 @@
 <div class="space-y-2">
     {% for item in cart.items %}
     <div
-        class="flex justify-between items-center bg-white p-3 rounded shadow-sm border-l-4 border-petSecondary animate-fade-in-down">
+        class="flex justify-between items-center bg-white p-3 rounded shadow-sm border-l-4 border-blue-500 animate-fade-in-down">
         <!-- Product Info -->
         <div class="flex-grow">
             <div class="flex items-center gap-2">
-                <span class="font-bold text-gray-800 text-lg">{{ item.product.name }}</span>
+                <span class="font-bold text-slate-800 text-lg">{{ item.product.name }}</span>
                 {% if item.product.is_bulk %}
                 <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded font-bold">GRANEL</span>
                 {% endif %}
             </div>
-            <div class="text-sm text-gray-500">
+            <div class="text-sm text-slate-500">
                 {{ item.quantity|floatformat:3 }} x {{ item.product.price_clp|intcomma }}
             </div>
         </div>
 
         <!-- Price & Remove -->
         <div class="text-right flex items-center gap-3">
-            <span class="font-bold text-xl text-petDark">
+            <span class="font-bold text-xl text-blue-800">
                 {{ item.line_total_formatted }}
             </span>
             <button hx-post="{% url 'remove_from_cart' item.product.id %}" hx-target="#cart-items-container"
@@ -37,19 +37,19 @@
 </div>
 
 <!-- Totals Footer -->
-<div class="mt-auto bg-gray-100 p-4 border-t-2 border-gray-300">
-    <div class="flex justify-between text-gray-600 text-sm mb-1">
+<div class="mt-auto bg-slate-100 p-4 border-t-2 border-slate-300">
+    <div class="flex justify-between text-slate-600 text-sm mb-1">
         <span>Subtotal Neto</span>
         <span>{{ cart.total_net|intcomma }}</span>
     </div>
-    <div class="flex justify-between text-gray-600 text-sm mb-3">
+    <div class="flex justify-between text-slate-600 text-sm mb-3">
         <span>IVA (19%)</span>
         <span>{{ cart.iva_formatted }}</span>
     </div>
 
     <div class="flex justify-between items-center mb-4">
-        <span class="text-2xl font-bold text-gray-800">TOTAL</span>
-        <span class="text-4xl font-black text-green-700">{{ cart.total_formatted }}</span>
+        <span class="text-2xl font-bold text-slate-800">TOTAL</span>
+        <span class="text-4xl font-black text-blue-700">{{ cart.total_formatted }}</span>
     </div>
 
     <div class="grid grid-cols-3 gap-2">
@@ -72,7 +72,7 @@
 </div>
 
 {% else %}
-<div class="h-full flex flex-col justify-center items-center text-gray-400 opacity-60">
+<div class="h-full flex flex-col justify-center items-center text-slate-400 opacity-60">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mb-4" fill="none" viewBox="0 0 24 24"
         stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

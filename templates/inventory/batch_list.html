@@ -4,20 +4,20 @@
 {% block title %}Lotes y Vencimientos - MascotaFeliz{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-    <div class="p-6 bg-petPrimary text-white flex justify-between items-center">
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-blue-200">
+    <div class="p-6 bg-blue-700 text-white flex justify-between items-center">
         <h2 class="text-2xl font-bold flex items-center gap-2">
             <span>📅</span> Lotes y Vencimientos
         </h2>
         <a href="{% url 'batch_create' %}"
-            class="bg-white text-petPrimary hover:bg-gray-100 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
+            class="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
             <span>+</span> Nuevo Lote
         </a>
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-left text-gray-600">
-            <thead class="bg-gray-100 uppercase text-xs font-bold text-gray-500">
+        <table class="w-full text-left text-slate-600">
+            <thead class="bg-slate-100 uppercase text-xs font-bold text-slate-500">
                 <tr>
                     <th class="px-6 py-4">Lote #</th>
                     <th class="px-6 py-4">Producto</th>
@@ -26,11 +26,11 @@
                     <th class="px-6 py-4 text-right">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-slate-200">
                 {% for batch in batches %}
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 font-mono text-sm font-bold text-gray-700">{{ batch.batch_number }}</td>
-                    <td class="px-6 py-4 font-bold text-gray-800">{{ batch.product.name }}</td>
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="px-6 py-4 font-mono text-sm font-bold text-slate-700">{{ batch.batch_number }}</td>
+                    <td class="px-6 py-4 font-bold text-slate-800">{{ batch.product.name }}</td>
                     <td class="px-6 py-4 text-center">
                         <span class="px-3 py-1 rounded-full text-xs font-bold
                             {% if batch.expiration_date < today %}bg-red-100 text-red-800
@@ -38,17 +38,17 @@
                             {{ batch.expiration_date|date:"d/m/Y" }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-center font-bold text-lg text-gray-800">{{ batch.current_quantity }}</td>
+                    <td class="px-6 py-4 text-center font-bold text-lg text-slate-800">{{ batch.current_quantity }}</td>
                     <td class="px-6 py-4 text-right space-x-2">
                         <a href="{% url 'batch_update' batch.id %}"
-                            class="text-petPrimary hover:text-petDark font-bold text-sm transition">Editar</a>
+                            class="text-blue-600 hover:text-blue-800 font-bold text-sm transition">Editar</a>
                         <a href="{% url 'batch_delete' batch.id %}"
                             class="text-red-500 hover:text-red-700 font-bold text-sm transition">Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="px-6 py-10 text-center text-gray-500">No hay lotes registrados.</td>
+                    <td colspan="5" class="px-6 py-10 text-center text-slate-500">No hay lotes registrados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="max-w-6xl mx-auto mt-10">
-    <h2 class="text-3xl font-bold text-petDark mb-8 flex items-center gap-3">
+    <h2 class="text-3xl font-bold text-blue-900 mb-8 flex items-center gap-3">
         <span class="text-4xl">📦</span> Gestión de Inventario
     </h2>
 
@@ -12,15 +12,14 @@
 
         <!-- Products -->
         <a href="{% url 'inventory_list' %}"
-            class="group block bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
-            <div class="h-40 bg-petPrimary flex items-center justify-center">
+            class="group block bg-white rounded-2xl shadow-lg border border-blue-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
+            <div class="h-40 bg-blue-600 flex items-center justify-center">
                 <span class="text-7xl">🏷️</span>
             </div>
             <div class="p-6 text-center">
-                <h3 class="text-2xl font-bold text-petDark group-hover:text-petPrimary transition">Productos</h3>
-                <p class="text-gray-600 mt-2">Administrar catálogo, precios y stock disponible.</p>
-                <div
-                    class="mt-4 bg-petPrimary bg-opacity-10 text-petPrimary px-4 py-2 rounded-lg font-bold hover:bg-opacity-20 transition">
+                <h3 class="text-2xl font-bold text-blue-900 group-hover:text-blue-700 transition">Productos</h3>
+                <p class="text-slate-600 mt-2">Administrar catálogo, precios y stock disponible.</p>
+                <div class="mt-4 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-bold hover:bg-blue-200 transition">
                     Ver Catálogo &rarr;
                 </div>
             </div>
@@ -28,15 +27,14 @@
 
         <!-- Categories -->
         <a href="{% url 'category_list' %}"
-            class="group block bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
-            <div class="h-40 bg-petSecondary flex items-center justify-center">
+            class="group block bg-white rounded-2xl shadow-lg border border-blue-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
+            <div class="h-40 bg-blue-700 flex items-center justify-center">
                 <span class="text-7xl">📂</span>
             </div>
             <div class="p-6 text-center">
-                <h3 class="text-2xl font-bold text-petDark group-hover:text-petSecondary transition">Categorías</h3>
-                <p class="text-gray-600 mt-2">Organizar productos en secciones (Alimentos, Juguetes, etc).</p>
-                <div
-                    class="mt-4 bg-petSecondary bg-opacity-10 text-petSecondary px-4 py-2 rounded-lg font-bold hover:bg-opacity-20 transition">
+                <h3 class="text-2xl font-bold text-blue-900 group-hover:text-blue-700 transition">Categorías</h3>
+                <p class="text-slate-600 mt-2">Organizar productos en secciones (Alimentos, Juguetes, etc).</p>
+                <div class="mt-4 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-bold hover:bg-blue-200 transition">
                     Gest. Categorías &rarr;
                 </div>
             </div>
@@ -44,15 +42,14 @@
 
         <!-- Batches -->
         <a href="{% url 'batch_list' %}"
-            class="group block bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
-            <div class="h-40 bg-petDark flex items-center justify-center">
+            class="group block bg-white rounded-2xl shadow-lg border border-blue-200 overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
+            <div class="h-40 bg-blue-800 flex items-center justify-center">
                 <span class="text-7xl">📅</span>
             </div>
             <div class="p-6 text-center">
-                <h3 class="text-2xl font-bold text-petDark group-hover:text-petDark transition">Lotes y Venc.</h3>
-                <p class="text-gray-600 mt-2">Controlar fechas de vencimiento y lotes de entrada.</p>
-                <div
-                    class="mt-4 bg-petDark bg-opacity-10 text-petDark px-4 py-2 rounded-lg font-bold hover:bg-opacity-20 transition">
+                <h3 class="text-2xl font-bold text-blue-900 group-hover:text-blue-700 transition">Lotes y Venc.</h3>
+                <p class="text-slate-600 mt-2">Controlar fechas de vencimiento y lotes de entrada.</p>
+                <div class="mt-4 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-bold hover:bg-blue-200 transition">
                     Ver Lotes &rarr;
                 </div>
             </div>
