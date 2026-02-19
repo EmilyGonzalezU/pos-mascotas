@@ -1,0 +1,38 @@
+{% load humanize %}
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in">
+    {% for product in products %}
+    <div class="bg-white rounded-xl shadow-sm border border-surface-200 p-4 hover:shadow-md hover:border-brand-300 transition-all cursor-pointer group flex flex-col h-full"
+        hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-items-container" hx-swap="innerHTML">
+
+        <div class="flex-1">
+            <h3 class="font-bold text-surface-900 group-hover:text-brand-700 transition-colors line-clamp-2">
+                {{ product.name }}
+            </h3>
+            <p class="text-xs text-surface-400 font-mono mt-1">{{ product.sku }}</p>
+            {% if product.brand_name %}
+            <span
+                class="inline-block mt-2 text-[10px] uppercase font-bold text-surface-500 bg-surface-100 px-1.5 py-0.5 rounded">
+                {{ product.brand_name }}
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-surface-100 flex justify-between items-end">
+            <div>
+                <span class="block text-xs text-surface-400">Precio</span>
+                <span class="text-lg font-bold text-surface-900">$ {{ product.price|intcomma }}</span>
+            </div>
+            <button
+                class="w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center group-hover:bg-brand-600 group-hover:text-white transition-colors shadow-sm">
+                +
+            </button>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full flex flex-col items-center justify-center py-12 text-center text-surface-400">
+        <p class="text-4xl mb-2">🔍</p>
+        <p class="font-medium">No se encontraron productos</p>
+        <p class="text-sm">Intenta con otro término o SKU</p>
+    </div>
+    {% endfor %}
+</div>

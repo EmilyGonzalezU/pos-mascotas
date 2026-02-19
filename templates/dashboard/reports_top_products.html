@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Top Productos — Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">🏆 Top Productos</h1>
+            <p class="text-slate-500 mt-1">Últimos 30 días — Ordenados por ingreso</p>
+        </div>
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="text-blue-600 hover:underline font-bold">← Dashboard</a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+        {% if top_products %}
+        <table class="w-full text-sm">
+            <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+                <tr>
+                    <th class="py-3 px-4 text-left">#</th>
+                    <th class="py-3 px-4 text-left">Producto</th>
+                    <th class="py-3 px-4 text-left">SKU</th>
+                    <th class="py-3 px-4 text-right">Unidades Vendidas</th>
+                    <th class="py-3 px-4 text-right">Ingreso Total</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for p in top_products %}
+                <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4">
+                        {% if forloop.counter <= 3 %} <span class="text-lg">{% if forloop.counter == 1 %}🥇{% elif
+                            forloop.counter == 2 %}🥈{% else %}🥉{% endif %}</span>
+                            {% else %}
+                            <span class="text-slate-400 font-bold">{{ forloop.counter }}</span>
+                            {% endif %}
+                    </td>
+                    <td class="py-3 px-4 font-medium">{{ p.product__name }}</td>
+                    <td class="py-3 px-4 text-slate-500">{{ p.product__sku }}</td>
+                    <td class="py-3 px-4 text-right font-bold">{{ p.total_sold }}</td>
+                    <td class="py-3 px-4 text-right font-bold text-green-700">$ {{ p.total_revenue|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="text-center py-16 text-slate-400">
+            <p class="text-xl">Sin datos de ventas en los últimos 30 días</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

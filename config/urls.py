@@ -20,7 +20,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('sales/', include('sales.urls')),
-    path('inventory/', include('inventory.urls')),
-    path('', include('sales.urls')), # Default to POS
+    path('dashboard/', include('apps.dashboard.urls')),
+    path('sales/', include('apps.sales.urls')),
+    path('inventory/', include('apps.inventory.urls')),
+    path('', include('apps.sales.urls')), # Default to POS
 ]

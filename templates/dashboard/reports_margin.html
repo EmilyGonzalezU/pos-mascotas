@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Reporte de Márgenes — Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">📈 Reporte de Márgenes</h1>
+            <p class="text-slate-500 mt-1">Últimos 30 días — Ingresos vs Costos por producto</p>
+        </div>
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="text-blue-600 hover:underline font-bold">← Dashboard</a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+        {% if margin_data %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Producto</th>
+                        <th class="py-3 px-4 text-left">SKU</th>
+                        <th class="py-3 px-4 text-right">Qty</th>
+                        <th class="py-3 px-4 text-right">Ingreso</th>
+                        <th class="py-3 px-4 text-right">Costo</th>
+                        <th class="py-3 px-4 text-right">Margen</th>
+                        <th class="py-3 px-4 text-right">%</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    {% for item in margin_data %}
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-medium">{{ item.product__name }}</td>
+                        <td class="py-3 px-4 text-slate-500">{{ item.product__sku }}</td>
+                        <td class="py-3 px-4 text-right">{{ item.qty }}</td>
+                        <td class="py-3 px-4 text-right text-green-700 font-bold">$ {{ item.revenue|intcomma }}</td>
+                        <td class="py-3 px-4 text-right text-red-600">$ {{ item.cost|intcomma }}</td>
+                        <td
+                            class="py-3 px-4 text-right font-bold {% if item.margin >= 0 %}text-green-700{% else %}text-red-600{% endif %}">
+                            $ {{ item.margin|intcomma }}
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <span class="inline-block px-2 py-1 rounded-full text-xs font-bold
+                                {% if item.margin_pct >= 30 %}bg-green-100 text-green-800
+                                {% elif item.margin_pct >= 15 %}bg-amber-100 text-amber-800
+                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ item.margin_pct }}%
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-16 text-slate-400">
+            <p class="text-xl">Sin datos de ventas en los últimos 30 días</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

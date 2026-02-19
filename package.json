@@ -1,0 +1,29 @@
+{
+  "name": "test-pos",
+  "version": "1.0.0",
+  "description": "Sistema de Punto de Venta (POS) moderno y completo para tiendas de mascotas en Chile, con soporte para venta a granel, gestión de inventario, integración de RUT/IVA y múltiples métodos de pago.",
+  "main": "index.js",
+  "scripts": {
+    "css:build": "npx @tailwindcss/cli -i static/src/input.css -o static/css/main.css --minify",
+    "css:watch": "npx @tailwindcss/cli -i static/src/input.css -o static/css/main.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmilyGonzalezU/pos-mascotas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/EmilyGonzalezU/pos-mascotas/issues"
+  },
+  "homepage": "https://github.com/EmilyGonzalezU/pos-mascotas#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.0",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.2.0"
+  }
+}

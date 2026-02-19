@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Dashboard — Administración{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-surface-900 flex items-center gap-3">
+                📊 Dashboard
+            </h1>
+            <p class="text-surface-500 mt-1">Vista general del rendimiento de tu tienda</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="{% url 'dashboard:alerts_stock' %}"
+                class="btn-warning shadow-lg shadow-warning-500/30">
+                ⚠️ Alertas
+            </a>
+            <a href="{% url 'dashboard:reports_margin' %}" class="btn-primary shadow-lg shadow-brand-500/30">
+                📈 Márgenes
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Today -->
+        <div class="kpi-card bg-gradient-to-br from-brand-600 to-brand-800 shadow-xl shadow-brand-900/20">
+            <p class="text-sm font-medium text-brand-100 uppercase tracking-wider">Ventas Hoy</p>
+            <p class="text-4xl font-black mt-2 tracking-tight">$ {{ summary.today.total|intcomma }}</p>
+            <p class="text-brand-200 mt-1 font-medium">{{ summary.today.count }} orden{{ summary.today.count|pluralize:"es" }}</p>
+        </div>
+
+        <!-- This Week -->
+        <div class="kpi-card bg-gradient-to-br from-success-600 to-success-800 shadow-xl shadow-success-900/20">
+            <p class="text-sm font-medium text-success-100 uppercase tracking-wider">Esta Semana</p>
+            <p class="text-4xl font-black mt-2 tracking-tight">$ {{ summary.week.total|intcomma }}</p>
+            <p class="text-success-200 mt-1 font-medium">{{ summary.week.count }} orden{{ summary.week.count|pluralize:"es" }}</p>
+        </div>
+
+        <!-- This Month -->
+        <div class="kpi-card bg-gradient-to-br from-purple-600 to-purple-800 shadow-xl shadow-purple-900/20">
+            <p class="text-sm font-medium text-purple-100 uppercase tracking-wider">Este Mes</p>
+            <p class="text-4xl font-black mt-2 tracking-tight">$ {{ summary.month.total|intcomma }}</p>
+            <p class="text-purple-200 mt-1 font-medium">{{ summary.month.count }} orden{{ summary.month.count|pluralize:"es" }}</p>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Sales Chart (7 days) -->
+        <div class="lg:col-span-2 card p-6">
+            <h3 class="text-lg font-bold text-surface-800 mb-4 flex items-center gap-2">
+                📉 Ventas - Últimos 7 Días
+            </h3>
+            <canvas id="salesChart" height="180"></canvas>
+        </div>
+
+        <!-- Payment Methods Pie -->
+        <div class="card p-6">
+            <h3 class="text-lg font-bold text-surface-800 mb-4 flex items-center gap-2">
+                💳 Métodos de Pago <span class="text-sm font-normal text-surface-400 text-right ml-auto">(Hoy)</span>
+            </h3>
+            <div class="relative">
+                <canvas id="paymentChart" height="200"></canvas>
+                {% if not summary.payment_methods %}
+                <div class="absolute inset-0 flex items-center justify-center text-surface-400 text-sm">
+                    Sin ventas hoy
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Top Products -->
+        <div class="card p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-surface-800">🏆 Top 5 Productos (30 días)</h3>
+                <a href="{% url 'dashboard:reports_top_products' %}"
+                    class="text-brand-600 text-sm font-bold hover:underline">Ver todos →</a>
+            </div>
+            {% if summary.top_products %}
+            <div class="overflow-hidden rounded-lg border border-surface-100">
+                <table class="w-full text-sm">
+                    <thead class="bg-surface-50 text-surface-500 uppercase text-xs">
+                        <tr>
+                            <th class="py-3 px-4 text-left">#</th>
+                            <th class="py-3 px-4 text-left">Producto</th>
+                            <th class="py-3 px-4 text-right">Qty</th>
+                            <th class="py-3 px-4 text-right">Ingreso</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-100">
+                        {% for p in summary.top_products %}
+                        <tr class="hover:bg-surface-50 transition-colors">
+                            <td class="py-3 px-4 font-bold text-surface-400">{{ forloop.counter }}</td>
+                            <td class="py-3 px-4 font-medium text-surface-700">{{ p.product__name }}</td>
+                            <td class="py-3 px-4 text-right text-surface-600">{{ p.total_sold }}</td>
+                            <td class="py-3 px-4 text-right font-bold text-success-600">$ {{ p.total_revenue|intcomma }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-surface-400 py-12 bg-surface-50 rounded-lg dashed-border">
+                <p>Sin datos de ventas recientes</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Alerts Summary -->
+        <div class="card p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-surface-800">⚠️ Alertas del Sistema</h3>
+                <a href="{% url 'dashboard:alerts_stock' %}"
+                    class="text-brand-600 text-sm font-bold hover:underline">Ver todo →</a>
+            </div>
+            <div class="space-y-4">
+                {% if summary.expired %}
+                <div class="msg-error flex items-center gap-4 shadow-sm">
+                    <span class="text-2xl">🚫</span>
+                    <div>
+                        <p class="font-bold text-danger-800">{{ summary.expired|length }} lote{{ summary.expired|length|pluralize:"s" }} vencido{{ summary.expired|length|pluralize:"s" }}
+                        </p>
+                        <p class="text-sm text-danger-600">Retirar de exhibición inmediatamente</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if summary.expiring %}
+                <div class="msg-warning flex items-center gap-4 shadow-sm bg-warning-50 border-warning-200">
+                    <span class="text-2xl">⏳</span>
+                    <div>
+                        <p class="font-bold text-warning-800">{{ summary.expiring|length }} lote{{ summary.expiring|length|pluralize:"s" }} por vencer</p>
+                        <p class="text-sm text-warning-600">Considerar promociones o descuentos</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if summary.low_stock %}
+                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg flex items-center gap-4 text-orange-800 shadow-sm">
+                    <span class="text-2xl">📦</span>
+                    <div>
+                        <p class="font-bold">{{ summary.low_stock|length }} producto{{ summary.low_stock|length|pluralize:"s" }} con stock bajo</p>
+                        <p class="text-sm text-orange-600">Generar orden de compra</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if not summary.expired and not summary.expiring and not summary.low_stock %}
+                <div class="text-center py-12 text-surface-400 bg-surface-50 rounded-lg">
+                    <p class="text-4xl mb-2 grayscale opacity-50">✅</p>
+                    <p class="font-medium">Todo bajo control</p>
+                    <p class="text-sm mt-1">Inventario saludable</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+    const chartData = {{ chart_data| safe }};
+    const paymentData = {{ payment_chart| safe }};
+
+    // Shared options
+    const commonOptions = {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+        }
+    };
+
+    // Sales Bar Chart
+    new Chart(document.getElementById('salesChart'), {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Ventas ($)',
+                data: chartData.sales,
+                backgroundColor: 'rgba(59, 130, 246, 0.8)', // brand-500
+                hoverBackgroundColor: 'rgba(29, 78, 216, 0.9)', // brand-700
+                borderRadius: 4,
+                barPercentage: 0.6,
+            }]
+        },
+        options: {
+            ...commonOptions,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: (v) => '$ ' + (v / 1000).toFixed(0) + 'k' },
+                    grid: { color: '#f1f5f9' },
+                    border: { display: false }
+                },
+                x: {
+                    grid: { display: false },
+                    border: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => '$ ' + ctx.raw.toLocaleString('es-CL'),
+                    }
+                }
+            }
+        }
+    });
+
+    // Payment Doughnut
+    if (paymentData.labels.length > 0) {
+        new Chart(document.getElementById('paymentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: paymentData.labels,
+                datasets: [{
+                    data: paymentData.values,
+                    backgroundColor: [
+                        '#10b981', // success
+                        '#3b82f6', // brand
+                        '#a855f7', // purple
+                        '#f97316', // orange
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8 } },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        callbacks: {
+                            label: (ctx) => ' $ ' + ctx.raw.toLocaleString('es-CL'),
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

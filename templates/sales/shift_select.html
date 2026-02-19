@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Seleccionar Turno — POS{% endblock %}
+
+{% block content %}
+<div class="card p-8 bg-surface-0 shadow-xl max-w-lg w-full mx-auto animate-slide-up mt-10">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-surface-900">Apertura de Caja</h1>
+        <p class="text-surface-500 mt-2">Selecciona una caja para iniciar tu turno</p>
+    </div>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        {% if error %}
+        <div class="msg-error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div>
+            <label for="register_id" class="block text-sm font-bold text-surface-700 mb-2">Caja Disponible</label>
+            <div class="relative">
+                <select name="register_id" id="register_id" required
+                    class="block w-full pl-4 pr-10 py-3 text-base border-surface-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm rounded-lg shadow-sm transition-colors text-surface-800 bg-surface-50">
+                    <option value="" disabled selected>-- Selecciona una caja --</option>
+                    {% for register in registers %}
+                    <option value="{{ register.id }}">
+                        {{ register.name }} ({{ register.branch.name|default:"Sucursal Principal" }})
+                    </option>
+                    {% empty %}
+                    <option disabled>No hay cajas disponibles</option>
+                    {% endfor %}
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-surface-500">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label for="opening_amount" class="block text-sm font-bold text-surface-700 mb-2">Monto de Apertura</label>
+            <div class="relative rounded-md shadow-sm">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span class="text-surface-500 sm:text-lg font-bold">$</span>
+                </div>
+                <input type="number" name="opening_amount" id="opening_amount" required min="0" placeholder="0"
+                    class="block w-full rounded-lg border-surface-300 pl-8 py-3 focus:border-brand-500 focus:ring-brand-500 text-lg shadow-sm text-surface-800 font-bold bg-surface-50">
+            </div>
+            <p class="mt-1 text-xs text-surface-500">Efectivo inicial en caja (sencillero).</p>
+        </div>
+
+        <button type="submit" class="w-full btn-primary py-3 text-lg justify-center shadow-lg hover:translate-y-[-2px]">
+            Abrir y Comenzar Turno
+        </button>
+    </form>
+</div>
+{% endblock %}

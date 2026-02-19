@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Resumen de Turno — POS{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+        📊 Resumen de Turno
+    </h1>
+
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+        <div class="bg-green-700 text-white p-6">
+            <h2 class="text-xl font-bold">✅ Turno Cerrado</h2>
+            <p class="text-green-200">{{ summary.shift.register.name }}</p>
+            <p class="text-green-200 text-sm">
+                {{ summary.shift.opened_at|date:"d/m/Y H:i" }} — {{ summary.shift.closed_at|date:"H:i" }}
+            </p>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <p class="text-sm text-slate-500 uppercase">Total Ventas</p>
+                    <p class="text-2xl font-black text-blue-800">{{ summary.total_orders }}</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <p class="text-sm text-slate-500 uppercase">Monto Total</p>
+                    <p class="text-2xl font-black text-green-700">$ {{ summary.total_sales|floatformat:0 }}</p>
+                </div>
+            </div>
+
+            <table class="w-full text-left">
+                <tbody class="divide-y">
+                    <tr class="py-2">
+                        <td class="py-2 text-slate-600">Efectivo Inicial</td>
+                        <td class="py-2 text-right font-bold">$ {{ summary.shift.opening_cash|floatformat:0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-slate-600">Efectivo Recibido (ventas)</td>
+                        <td class="py-2 text-right font-bold">$ {{ summary.total_cash_received|floatformat:0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-slate-600">Efectivo Esperado</td>
+                        <td class="py-2 text-right font-bold text-blue-800">$ {{ summary.expected_cash|floatformat:0 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-slate-600">Efectivo Contado</td>
+                        <td class="py-2 text-right font-bold">$ {{ summary.closing_cash|floatformat:0 }}</td>
+                    </tr>
+                    <tr class="border-t-2">
+                        <td class="py-3 font-bold text-lg">Diferencia</td>
+                        <td
+                            class="py-3 text-right font-black text-2xl {% if summary.difference >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                            {% if summary.difference >= 0 %}+{% endif %}$ {{ summary.difference|floatformat:0 }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pt-4">
+                <a href="{% url 'shift_select' %}"
+                    class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow transition">
+                    Abrir Nuevo Turno
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

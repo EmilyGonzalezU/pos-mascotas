@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Seleccionar Caja — POS{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+        🏪 Seleccionar Caja
+    </h1>
+
+    {% if active_shift %}
+    <div class="bg-green-50 border border-green-300 p-4 rounded-xl mb-6 flex justify-between items-center">
+        <div>
+            <p class="font-bold text-green-800">✅ Turno activo</p>
+            <p class="text-green-700">{{ active_shift.register.name }} — abierto a las {{ active_shift.opened_at|time:"H:i" }}</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'pos_dashboard' %}"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition">
+                Ir a Caja
+            </a>
+            <a href="{% url 'shift_close' %}"
+                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-lg transition">
+                Cerrar Turno
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if registers %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for item in registers %}
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-800">{{ item.register.name }}</h3>
+                <p class="text-slate-500 text-sm">{{ item.register.branch.name }}</p>
+
+                {% if item.open_shift %}
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p class="text-amber-800 font-semibold">🔒 En uso</p>
+                    <p class="text-sm text-amber-600">
+                        Cajero: {{ item.open_shift.cashier.get_full_name|default:item.open_shift.cashier.username }}
+                        — desde {{ item.open_shift.opened_at|time:"H:i" }}
+                    </p>
+                </div>
+                {% else %}
+                <form method="post" action="{% url 'shift_open' item.register.id %}" class="mt-4 space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Efectivo Inicial ($)</label>
+                        <input type="number" name="opening_cash" value="0" min="0"
+                            class="w-full px-4 py-2 border-2 border-slate-300 rounded-lg focus:border-blue-600 focus:ring-0 text-lg font-bold">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow transition transform hover:scale-[1.02]">
+                        ▶️ Abrir Turno
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-20 text-slate-500">
+        <p class="text-xl">No hay cajas registradoras configuradas.</p>
+        <p class="mt-2">Pide al administrador que cree cajas desde el panel de administración.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,41 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Confirmar Eliminación - MascotaFeliz{% endblock %}
+{% block title %}Confirmar Eliminación — Inventario{% endblock %}
 
 {% block content %}
-<div class="max-w-lg mx-auto mt-20">
-    <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div class="bg-red-500 p-6 text-white">
-            <h2 class="text-2xl font-bold flex items-center gap-3">
-                <span class="text-4xl">⚠️</span>
-                Confirmar Eliminación
-            </h2>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-surface-950/20 backdrop-blur-sm p-4">
+    <div class="card p-8 bg-white shadow-2xl max-w-md w-full animate-slide-up text-center border-l-4 border-red-500">
+        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+            🗑️
         </div>
 
-        <div class="p-8">
-            <p class="text-lg text-gray-700 mb-6">
-                ¿Está seguro que desea eliminar
-                <span class="font-bold text-petDark">"{{ product.name|default:product }}"</span>?
-            </p>
+        <h1 class="text-2xl font-bold text-surface-900 mb-2">¿Estás seguro?</h1>
+        <p class="text-surface-600 mb-6">
+            Estás a punto de eliminar
+            <span class="font-bold text-surface-900">"{{ product.name|default:object }}"</span>.
+            Esta acción no se puede deshacer.
+        </p>
 
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
-                <p class="text-sm text-yellow-800">
-                    <span class="font-bold">Advertencia:</span> Esta acción no se puede deshacer.
-                </p>
-            </div>
-
-            <form method="post" class="flex justify-end gap-4">
-                {% csrf_token %}
-                <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-bold transition shadow-sm">
-                    Cancelar
-                </a>
-                <button type="submit"
-                    class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold transition shadow-md">
-                    Sí, Eliminar
-                </button>
-            </form>
-        </div>
+        <form method="post" class="flex flex-col gap-3">
+            {% csrf_token %}
+            <button type="submit" class="w-full btn-danger py-3 justify-center text-lg shadow-lg">
+                Sí, Eliminar Definitivamente
+            </button>
+            <a href="javascript:history.back()" class="w-full btn-ghost py-3 justify-center text-surface-600">
+                Cancelar
+            </a>
+        </form>
     </div>
 </div>
 {% endblock %}

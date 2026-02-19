@@ -1,31 +1,29 @@
 {% if products %}
 <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     {% for product in products %}
-    <button hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-items-container"
-        class="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform active:scale-95 text-left border border-gray-100 hover:border-petPrimary group flex flex-col h-full relative overflow-hidden">
+    <button hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-items-container" hx-swap="innerHTML"
+        class="bg-surface-0 p-4 rounded-lg shadow-md hover:shadow-xl transition transform active:scale-95 text-left border border-surface-200 hover:border-brand-400 group flex flex-col h-full relative overflow-hidden">
 
-        <!-- Badge Granel -->
         {% if product.is_bulk %}
-        <div
-            class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-bl-lg z-10">
+        <div class="absolute top-0 right-0 bg-warning-400 text-warning-900 text-xs font-bold px-2 py-1 rounded-bl-lg z-10">
             GRANEL
         </div>
         {% endif %}
 
         <div class="mb-2">
-            <span class="block text-xs font-bold text-gray-400 uppercase">{{ product.brand }}</span>
-            <h3 class="font-bold text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-petPrimary">
+            <span class="block text-xs font-bold text-surface-400 uppercase">{{ product.brand }}</span>
+            <h3 class="font-bold text-surface-800 text-lg leading-tight line-clamp-2 group-hover:text-brand-600">
                 {{ product.name }}
             </h3>
-            <span class="text-xs text-gray-500">SKU: {{ product.sku }}</span>
+            <span class="text-xs text-surface-500">SKU: {{ product.sku }}</span>
         </div>
 
-        <div class="mt-auto pt-3 border-t border-gray-100 flex justify-between items-end">
+        <div class="mt-auto pt-3 border-t border-surface-100 flex justify-between items-end">
             <div>
-                <span class="block text-xs text-gray-400">Precio</span>
-                <span class="text-xl font-black text-petDark">${{ product.price_clp|floatformat:0 }}</span>
+                <span class="block text-xs text-surface-400">Precio</span>
+                <span class="text-xl font-black text-surface-900">${{ product.price_clp|floatformat:0 }}</span>
             </div>
-            <div class="bg-petPrimary text-white p-2 rounded-full shadow-lg group-hover:bg-petDark transition">
+            <div class="bg-brand-600 text-white p-2 rounded-full shadow-lg group-hover:bg-brand-700 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -37,7 +35,7 @@
     {% endfor %}
 </div>
 {% else %}
-<div class="text-center text-gray-500 mt-20">
+<div class="text-center text-surface-500 mt-20">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-30" fill="none" viewBox="0 0 24 24"
         stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
