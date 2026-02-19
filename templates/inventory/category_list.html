@@ -1,52 +1,64 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}Categorías - MascotaFeliz{% endblock %}
+{% block title %}Categorías — Inventario{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-xl shadow-md overflow-hidden border border-blue-200">
-    <div class="p-6 bg-blue-700 text-white flex justify-between items-center">
-        <h2 class="text-2xl font-bold flex items-center gap-2">
-            <span>📂</span> Categorías
-        </h2>
-        <a href="{% url 'category_create' %}"
-            class="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
-            <span>+</span> Nueva Categoría
+<div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-surface-900 flex items-center gap-3">
+                📂 Categorías
+            </h1>
+            <p class="text-surface-500 mt-1">Organiza tus productos por categoría</p>
+        </div>
+        <a href="{% url 'category_create' %}" class="btn-primary shadow-lg shadow-brand-500/30">
+            + Nueva Categoría
         </a>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-left text-slate-600">
-            <thead class="bg-slate-100 uppercase text-xs font-bold text-slate-500">
-                <tr>
-                    <th class="px-6 py-4">Nombre</th>
-                    <th class="px-6 py-4 text-center">Productos</th>
-                    <th class="px-6 py-4 text-right">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200">
-                {% for category in categories %}
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-bold text-slate-800 text-lg">{{ category.name }}</td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full font-bold">
-                            {{ category.products.count }} productos
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right space-x-2">
-                        <a href="{% url 'category_update' category.id %}"
-                            class="text-blue-600 hover:text-blue-800 font-bold text-sm transition">Editar</a>
-                        <a href="{% url 'category_delete' category.id %}"
-                            class="text-red-500 hover:text-red-700 font-bold text-sm transition">Eliminar</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="px-6 py-10 text-center text-slate-500">No hay categorías.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Table -->
+    <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-surface-50 text-surface-500 uppercase text-xs">
+                    <tr>
+                        <th class="py-3 px-6 text-left">Nombre</th>
+                        <th class="py-3 px-6 text-center">Productos</th>
+                        <th class="py-3 px-6 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-100">
+                    {% for category in categories %}
+                    <tr class="hover:bg-surface-50 transition-colors">
+                        <td class="px-6 py-4 font-bold text-surface-800 text-lg">{{ category.name }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span
+                                class="bg-brand-50 text-brand-700 text-sm px-3 py-1 rounded-full font-bold border border-brand-200">
+                                {{ category.products.count }} producto{{ category.products.count|pluralize:"s" }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right space-x-3">
+                            <a href="{% url 'category_update' category.id %}"
+                                class="text-brand-600 hover:text-brand-800 font-bold text-sm transition">Editar</a>
+                            <a href="{% url 'category_delete' category.id %}"
+                                class="text-red-500 hover:text-red-700 font-bold text-sm transition">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-12 text-center text-surface-400">
+                            <p class="text-4xl mb-2 grayscale opacity-50">📂</p>
+                            <p class="font-medium">No hay categorías creadas</p>
+                            <p class="text-sm mt-1">Crea una categoría para organizar tus productos</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

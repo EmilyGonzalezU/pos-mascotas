@@ -1,0 +1,339 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Rgeqh6s7dGddt9ohdiKK39$onephp7L0uiUaPQKjPPJW+d+9sV7F3NDIoCILeRPXsE=",
+    "last_login": "2026-02-18T17:47:43.458Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@admin.cl",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-16T15:44:11.617Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "tenants.tenant",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-18T17:56:12.054Z",
+    "modified_at": "2026-02-18T17:56:12.054Z",
+    "name": "Mi Tienda de Mascotas",
+    "legal_name": "Mi Tienda de Mascotas SpA",
+    "rut_empresa": "00.000.000-0",
+    "subdomain": "default",
+    "logo": "",
+    "giro": "",
+    "direccion_legal": "",
+    "comuna": "",
+    "region": "",
+    "iva_rate": "19.00",
+    "currency": "CLP",
+    "is_active": true
+  }
+},
+{
+  "model": "tenants.branch",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-18T17:56:12.062Z",
+    "modified_at": "2026-02-18T17:56:12.062Z",
+    "tenant": 1,
+    "name": "Sucursal Principal",
+    "address": "",
+    "phone": "",
+    "is_main": true,
+    "is_active": true
+  }
+},
+{
+  "model": "tenants.subscription",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-18T17:56:12.063Z",
+    "modified_at": "2026-02-18T17:56:12.063Z",
+    "tenant": 1,
+    "plan": "FREE",
+    "status": "ACTIVE",
+    "trial_ends_at": null,
+    "current_period_end": null,
+    "max_branches": 1,
+    "max_registers": 1,
+    "max_users": 2
+  }
+},
+{
+  "model": "accounts.staffprofile",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-18T18:54:04.453Z",
+    "modified_at": "2026-02-18T18:54:04.453Z",
+    "tenant": 1,
+    "user": [
+      "admin"
+    ],
+    "role": "OWNER",
+    "branch": null,
+    "pin_code": "",
+    "is_active_staff": true
+  }
+},
+{
+  "model": "inventory.category",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-16T16:16:06.393Z",
+    "modified_at": "2026-02-16T16:16:06.393Z",
+    "tenant": 1,
+    "name": "emilu"
+  }
+},
+{
+  "model": "inventory.category",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-02-16T16:31:45.700Z",
+    "modified_at": "2026-02-16T16:31:45.700Z",
+    "tenant": 1,
+    "name": "Emily"
+  }
+},
+{
+  "model": "inventory.product",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-16T16:16:54.865Z",
+    "modified_at": "2026-02-16T17:59:50.013Z",
+    "tenant": 1,
+    "sku": "123",
+    "barcode": "123",
+    "name": "Emily",
+    "species": "DOG",
+    "lifecycle": "ADULT",
+    "price_clp": 12990,
+    "is_bulk": false,
+    "stock": "0.000",
+    "brand": null,
+    "category": 1,
+    "supplier": null,
+    "protein": "NONE",
+    "weight_kg": null,
+    "cost_clp": 0,
+    "min_margin_pct": "20.00",
+    "min_stock_alert": "5.000",
+    "bulk_price_per_kg": null,
+    "image": "",
+    "brand_name": "e"
+  }
+},
+{
+  "model": "inventory.batch",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-16T16:16:54.871Z",
+    "modified_at": "2026-02-16T16:16:54.871Z",
+    "tenant": 1,
+    "product": 1,
+    "batch_number": "123",
+    "expiration_date": "2026-03-19",
+    "quantity": "12.000",
+    "current_quantity": "12.000"
+  }
+},
+{
+  "model": "sales.order",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-16T17:12:57.755Z",
+    "modified_at": "2026-02-16T17:12:57.777Z",
+    "tenant": 1,
+    "customer": null,
+    "total_clp": 25980,
+    "date": "2026-02-16T17:12:57.755Z",
+    "is_paid": true,
+    "shift": null,
+    "branch": null,
+    "cashier": null,
+    "order_number": "",
+    "is_voided": false,
+    "voided_by": null,
+    "void_reason": "",
+    "net_amount": 0,
+    "iva_amount": 0
+  }
+},
+{
+  "model": "sales.order",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-02-16T17:13:11.332Z",
+    "modified_at": "2026-02-16T17:13:11.345Z",
+    "tenant": 1,
+    "customer": null,
+    "total_clp": 12990,
+    "date": "2026-02-16T17:13:11.332Z",
+    "is_paid": true,
+    "shift": null,
+    "branch": null,
+    "cashier": null,
+    "order_number": "",
+    "is_voided": false,
+    "voided_by": null,
+    "void_reason": "",
+    "net_amount": 0,
+    "iva_amount": 0
+  }
+},
+{
+  "model": "sales.order",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-02-16T17:13:22.502Z",
+    "modified_at": "2026-02-16T17:13:22.517Z",
+    "tenant": 1,
+    "customer": null,
+    "total_clp": 116910,
+    "date": "2026-02-16T17:13:22.502Z",
+    "is_paid": true,
+    "shift": null,
+    "branch": null,
+    "cashier": null,
+    "order_number": "",
+    "is_voided": false,
+    "voided_by": null,
+    "void_reason": "",
+    "net_amount": 0,
+    "iva_amount": 0
+  }
+},
+{
+  "model": "sales.order",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-02-16T17:59:50.005Z",
+    "modified_at": "2026-02-16T17:59:50.018Z",
+    "tenant": 1,
+    "customer": null,
+    "total_clp": 12990,
+    "date": "2026-02-16T17:59:50.005Z",
+    "is_paid": true,
+    "shift": null,
+    "branch": null,
+    "cashier": null,
+    "order_number": "",
+    "is_voided": false,
+    "voided_by": null,
+    "void_reason": "",
+    "net_amount": 0,
+    "iva_amount": 0
+  }
+},
+{
+  "model": "sales.orderitem",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "product": 1,
+    "quantity": "2.000",
+    "unit_price_clp": 12990,
+    "cost_at_sale": 0,
+    "line_total_clp": 25980
+  }
+},
+{
+  "model": "sales.orderitem",
+  "pk": 2,
+  "fields": {
+    "order": 2,
+    "product": 1,
+    "quantity": "1.000",
+    "unit_price_clp": 12990,
+    "cost_at_sale": 0,
+    "line_total_clp": 12990
+  }
+},
+{
+  "model": "sales.orderitem",
+  "pk": 3,
+  "fields": {
+    "order": 3,
+    "product": 1,
+    "quantity": "9.000",
+    "unit_price_clp": 12990,
+    "cost_at_sale": 0,
+    "line_total_clp": 116910
+  }
+},
+{
+  "model": "sales.orderitem",
+  "pk": 4,
+  "fields": {
+    "order": 4,
+    "product": 1,
+    "quantity": "1.000",
+    "unit_price_clp": 12990,
+    "cost_at_sale": 0,
+    "line_total_clp": 12990
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-02-16T17:12:57.776Z",
+    "modified_at": "2026-02-16T17:12:57.776Z",
+    "tenant": 1,
+    "order": 1,
+    "amount_clp": 25980,
+    "method": "CASH",
+    "transaction_id": null,
+    "card_last_4": null
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-02-16T17:13:11.344Z",
+    "modified_at": "2026-02-16T17:13:11.344Z",
+    "tenant": 1,
+    "order": 2,
+    "amount_clp": 12990,
+    "method": "CARD",
+    "transaction_id": "123",
+    "card_last_4": "1234"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-02-16T17:13:22.516Z",
+    "modified_at": "2026-02-16T17:13:22.516Z",
+    "tenant": 1,
+    "order": 3,
+    "amount_clp": 116910,
+    "method": "TRANSFER",
+    "transaction_id": "123123123",
+    "card_last_4": null
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-02-16T17:59:50.017Z",
+    "modified_at": "2026-02-16T17:59:50.017Z",
+    "tenant": 1,
+    "order": 4,
+    "amount_clp": 12990,
+    "method": "TRANSFER",
+    "transaction_id": "weqe",
+    "card_last_4": null
+  }
+}
+]

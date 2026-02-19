@@ -1,0 +1,5 @@
+# Core dependencies
+Django>=6.0,<6.1
+django-htmx>=1.21,<2.0
+django-widget-tweaks>=1.5,<2.0
+psycopg[binary]>=3.2,<4.0

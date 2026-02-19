@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Alertas de Stock — Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">⚠️ Alertas de Inventario</h1>
+            <p class="text-slate-500 mt-1">Stock bajo, lotes vencidos y próximos a vencer</p>
+        </div>
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="text-blue-600 hover:underline font-bold">← Dashboard</a>
+    </div>
+
+    <!-- Expired Batches -->
+    {% if expired %}
+    <div class="bg-white rounded-2xl shadow-lg border border-red-200 overflow-hidden">
+        <div class="bg-red-600 text-white p-4">
+            <h3 class="text-lg font-bold">🚫 Lotes Vencidos ({{ expired|length }})</h3>
+        </div>
+        <table class="w-full text-sm">
+            <thead class="bg-red-50 text-red-800 uppercase text-xs">
+                <tr>
+                    <th class="py-2 px-4 text-left">Producto</th>
+                    <th class="py-2 px-4 text-left">Lote</th>
+                    <th class="py-2 px-4 text-right">Vencimiento</th>
+                    <th class="py-2 px-4 text-right">Cantidad Restante</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for batch in expired %}
+                <tr class="bg-red-50/50 hover:bg-red-50">
+                    <td class="py-2 px-4 font-medium">{{ batch.product.name }}</td>
+                    <td class="py-2 px-4 text-slate-500">{{ batch.lot_number }}</td>
+                    <td class="py-2 px-4 text-right text-red-700 font-bold">{{ batch.expiration_date|date:"d/m/Y" }}
+                    </td>
+                    <td class="py-2 px-4 text-right">{{ batch.current_quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Expiring Soon -->
+    {% if expiring %}
+    <div class="bg-white rounded-2xl shadow-lg border border-amber-200 overflow-hidden">
+        <div class="bg-amber-500 text-white p-4">
+            <h3 class="text-lg font-bold">⏳ Próximos a Vencer — 30 días ({{ expiring|length }})</h3>
+        </div>
+        <table class="w-full text-sm">
+            <thead class="bg-amber-50 text-amber-800 uppercase text-xs">
+                <tr>
+                    <th class="py-2 px-4 text-left">Producto</th>
+                    <th class="py-2 px-4 text-left">Lote</th>
+                    <th class="py-2 px-4 text-right">Vencimiento</th>
+                    <th class="py-2 px-4 text-right">Días Restantes</th>
+                    <th class="py-2 px-4 text-right">Cantidad</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for batch in expiring %}
+                <tr class="hover:bg-amber-50/50">
+                    <td class="py-2 px-4 font-medium">{{ batch.product.name }}</td>
+                    <td class="py-2 px-4 text-slate-500">{{ batch.lot_number }}</td>
+                    <td class="py-2 px-4 text-right">{{ batch.expiration_date|date:"d/m/Y" }}</td>
+                    <td class="py-2 px-4 text-right">
+                        <span class="px-2 py-1 rounded-full text-xs font-bold
+                            {% if batch.days_to_expiration <= 7 %}bg-red-100 text-red-800
+                            {% elif batch.days_to_expiration <= 15 %}bg-amber-100 text-amber-800
+                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            {{ batch.days_to_expiration }} días
+                        </span>
+                    </td>
+                    <td class="py-2 px-4 text-right">{{ batch.current_quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Low Stock -->
+    {% if low_stock %}
+    <div class="bg-white rounded-2xl shadow-lg border border-orange-200 overflow-hidden">
+        <div class="bg-orange-500 text-white p-4">
+            <h3 class="text-lg font-bold">📦 Stock Bajo ({{ low_stock|length }})</h3>
+        </div>
+        <table class="w-full text-sm">
+            <thead class="bg-orange-50 text-orange-800 uppercase text-xs">
+                <tr>
+                    <th class="py-2 px-4 text-left">Producto</th>
+                    <th class="py-2 px-4 text-left">SKU</th>
+                    <th class="py-2 px-4 text-right">Stock Actual</th>
+                    <th class="py-2 px-4 text-right">Stock Mínimo</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for product in low_stock %}
+                <tr class="hover:bg-orange-50/50">
+                    <td class="py-2 px-4 font-medium">{{ product.name }}</td>
+                    <td class="py-2 px-4 text-slate-500">{{ product.sku }}</td>
+                    <td class="py-2 px-4 text-right font-bold text-red-600">{{ product.stock }}</td>
+                    <td class="py-2 px-4 text-right text-slate-500">{{ product.min_stock_alert }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if not expired and not expiring and not low_stock %}
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-16 text-center">
+        <p class="text-5xl mb-4">✅</p>
+        <p class="text-xl text-slate-600 font-bold">Sin alertas pendientes</p>
+        <p class="text-slate-400 mt-2">Todo el inventario está dentro de los parámetros normales</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
